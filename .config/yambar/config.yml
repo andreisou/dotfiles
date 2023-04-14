@@ -1,0 +1,46 @@
+iosevka: &iosevka Iosevka Extended:pixelsize=13
+
+bar:
+  height: 20
+  location: top
+  font: *iosevka
+  spacing: 0
+  margin: 0
+  layer: bottom
+  foreground: eeeeeeff
+  background: 2E3440dd
+  left:
+    - river:
+        anchors:
+          - base: &river_base
+              left-margin: 4
+              right-margin: 4 
+              default: {string: {text: "{id}", font: *iosevka}}
+              conditions: {}
+        content:
+          map:
+            conditions:
+              state == urgent:
+                map:
+                  <<: *river_base
+              state == focused:
+                map:
+                  <<: *river_base
+              state == visible && ~occupied:
+                map:
+                  <<: *river_base
+              state == visible && occupied:
+                map:
+                  <<: *river_base
+              state == unfocused:
+                map:
+                  <<: *river_base
+              state == invisible && ~occupied: {empty: {}}
+              state == invisible && occupied:
+                map:
+                  <<: *river_base
+  right:
+    - clock:
+        time-format: "%H:%M"
+        content:
+          - string: {text: "{time}"}

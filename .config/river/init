@@ -1,7 +1,8 @@
 #!/bin/sh
 
-riverctl map normal Super+Shift Return spawn foot
-riverctl map normal Super D spawn fuzzel
+riverctl map normal Super+Shift Return spawn 'footclient -e tmux new -A'
+riverctl map normal Super P spawn /home/andrei/.config/river/power.sh
+riverctl map normal Super D spawn tofi-drun
 riverctl map normal Super Q close
 riverctl map normal Super+Shift E exit
 riverctl map normal Super J focus-view next
@@ -34,36 +35,40 @@ riverctl map-pointer normal Super BTN_RIGHT resize-view
 riverctl map-pointer normal Super BTN_MIDDLE toggle-float
 
 for i in $(seq 1 9); do
-    tags=$((1 << ($i - 1)))
+	tags=$((1 << ($i - 1)))
 
-    riverctl map normal Super $i set-focused-tags $tags
-    riverctl map normal Super+Shift $i set-view-tags $tags
-    riverctl map normal Super+Control $i toggle-focused-tags $tags
-    riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
+	riverctl map normal Super $i set-focused-tags $tags
+	riverctl map normal Super+Shift $i set-view-tags $tags
+	riverctl map normal Super+Control $i toggle-focused-tags $tags
+	riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
 done
 
 all_tags=$(((1 << 32) - 1))
+
 riverctl map normal Super 0 set-focused-tags $all_tags
 riverctl map normal Super+Shift 0 set-view-tags $all_tags
 riverctl map normal Super Space toggle-float
 riverctl map normal Super F toggle-fullscreen
-riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
+riverctl map normal Super Up send-layout-cmd rivertile "main-location top"
 riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
-riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
-riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
-riverctl map normal Super F11 enter-mode passthrough
-riverctl map passthrough Super F11 enter-mode normal
-for mode in normal locked; do
-    riverctl map $mode None XF86AudioRaiseVolume  spawn 'pamixer -i 5'
-    riverctl map $mode None XF86AudioLowerVolume  spawn 'pamixer -d 5'
-    riverctl map $mode None XF86AudioMute         spawn 'pamixer --toggle-mute'
-done
+riverctl map normal Super Down send-layout-cmd rivertile "main-location bottom"
+riverctl map normal Super Left send-layout-cmd rivertile "main-location left"
+riverctl map normal None XF86AudioRaiseVolume spawn 'pamixer -i 5'
+riverctl map normal None XF86AudioLowerVolume spawn 'pamixer -d 5'
+riverctl map normal None XF86AudioMute spawn 'pamixer --toggle-mute'
 
-riverctl background-color 0x002b36
-riverctl border-color-focused 0x93a1a1
-riverctl border-color-unfocused 0x586e75
-
-riverctl set-repeat 0 0
+riverctl border-width 1
 
 riverctl default-layout rivertile
 rivertile -view-padding 0 -outer-padding 0 &
+
+for pointer in $(riverctl list-inputs | grep pointer); do
+	riverctl input $pointer accel-profile flat
+	riverctl input $pointer pointer-accel 0.0
+done
+
+riverctl keyboard-layout -options 'caps:escape' br
+
+riverctl spawn yambar
+riverctl spawn mako
+riverctl spawn 'foot --server'

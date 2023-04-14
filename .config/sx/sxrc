@@ -1,0 +1,5 @@
+#!/bin/sh
+
+while /home/andrei/.config/dwm/status.sh; do sleep 1; done &
+
+exec dwm

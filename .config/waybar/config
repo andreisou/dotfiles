@@ -1,0 +1,33 @@
+{
+    "layer": "bottom",
+    "position": "top",
+    "height": 20,
+    "spacing": 0,
+    "modules-left": ["river/tags", "river/window"],
+    "modules-right": ["tray", "mpd", "wireplumber", "battery", "clock"],
+    "tray": {
+        "icon-size": 20,
+        "spacing": 4
+    },
+    "mpd": {
+        "format": "[Playing] {artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})",
+        "format-paused": "[Paused] {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})",
+        "format-stopped": "[Stopped]",
+        "format-disconnected": "[Disconnected]",
+        "unknown-tag": "N/A",
+        "interval": 5,
+    },
+	"wireplumber": {
+	},
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "({capacity}%)",
+        "format-charging": "({capacity}%)",
+        "format-plugged": "[{capacity}%]",
+        "format-full": "[{capacity}%]",
+        "format-alt": "{time} {icon}",
+    },
+}
